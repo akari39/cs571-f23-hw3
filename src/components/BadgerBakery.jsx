@@ -5,6 +5,7 @@ import { Col, Container, Row } from "react-bootstrap";
 export default function BadgerBakery() {
 
     const [bakedGoods, setBakedGoods] = useState([]);
+    const [featuredGood, setFeaturedGood] = useState({});
 
     useEffect(() => {
         fetch("https://cs571.org/api/f23/hw3/all-baked-goods", {
@@ -19,9 +20,17 @@ export default function BadgerBakery() {
         })
     }, [])
 
+    useEffect(filterFeaturedItem, [bakedGoods]);
+
+    function filterFeaturedItem() {
+        const featuredGood = bakedGoods.find((bakedGood) => bakedGood.featured);
+        setFeaturedGood(featuredGood);
+    }
+
     return <div>
         <h1>Badger Bakery</h1>
         <p>Welcome to our small-town bakery located in Madison, WI!</p>
+        {featuredGood !== undefined ? <p>Today's featured item is {featuredGood.name} for ${featuredGood.price}!</p> : null}
         <Container>
             <Row>
             {
